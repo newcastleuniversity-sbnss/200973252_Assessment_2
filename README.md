@@ -11,7 +11,7 @@ Process
 -
 
 - Count data from provided GitHub repository downloaded and extracted into R working directory
-- Practical_8.sh run in R (v4.4.2)
+- Practical_8.R run in R (v4.4.2)
 
 Data
 -
