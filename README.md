@@ -23,7 +23,8 @@ Data
 
 - Analysis
 
-  Count data quantified in Salmon (v1.9.0) available at GitHub repository: https://github.com/sjcockell/mmb8052/raw/main/practicals/practical_08/results/counts.zip
+  Count data available at GitHub repository: https://github.com/sjcockell/mmb8052/raw/main/practicals/practical_08/results/counts.zip
+    GSE118356 downloaded using sra_tools (v2.8.0) and quantified using Salmon (v1.9.0).
 
   Sample table (downloaded in R) available at Github Repository: https://raw.githubusercontent.com/sjcockell/mmb8052/main/practicals/practical_08/data/sample_table.csv
 
