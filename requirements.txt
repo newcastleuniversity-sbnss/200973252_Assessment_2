@@ -1,0 +1,13 @@
+Quantification:
+  sra_tools v2.8.0
+  Salmon v1.9.0
+
+Analysis:
+  R 4.4.2
+Packages:
+  TXimport 1.34.0
+  tidyverse 2.0.0
+  DESeq2 1.46.0
+  pHeatmap 1.0.12
+  RColourBrewer 1.1-3
+  biomaRt 2.62.0
