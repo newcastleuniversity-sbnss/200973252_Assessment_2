@@ -54,7 +54,7 @@ rld=rlog(dds)
 
 #Plots transformed data in a PCA plot with a colourblind suitable colour palette from RColourBrewer. Adjustments made using ggplot functions
 plotPCA(rld, intgroup="Group")+
-  geom_point(size=3, alpha=1)+
+  geom_point(size=3, alpha=1, )+
   scale_color_brewer(palette="Dark2")+
   labs(colour="Sample Group")+
   ggtitle("Normalized Dataset PCA")+
@@ -123,9 +123,9 @@ ggplot(plot_results24h, aes(x=log2FoldChange, y=logPVal)) +
   scale_color_manual(values=c("darkcyan","darkslateblue","black", "darkorange3"))+ 
   geom_hline(yintercept=-log10(0.05), linetype="dashed", colour="black")+
   geom_vline(xintercept=c(1, -1), linetype="dashed", colour="black")+
-  xlim(-24, 24)+
+  xlim(-15, 15)+
   ylim(-0.05, 200)+
-  ggtitle("Differential Gene Expression - 24h vs. Naïve")+
+  ggtitle("24h vs. Naïve")+
   theme_classic()
 
 
@@ -154,9 +154,9 @@ ggplot(plot_results2h, aes(x=log2FoldChange, y=logPVal)) +
   scale_color_manual(values=c("darkcyan","darkslateblue","black", "darkorange3"))+ 
   geom_hline(yintercept=-log10(0.05), linetype="dashed", colour="black")+
   geom_vline(xintercept=c(1, -1), linetype="dashed", colour="black")+
-  xlim(-24, 24)+
+  xlim(-14, 14)+
   ylim(-0.05, 200)+
-  ggtitle("Differential Gene Expression - 2h vs. Naïve")+
+  ggtitle("2h vs. Naïve")+
   theme_classic()
 
 
@@ -187,7 +187,7 @@ ggplot(plot_resultsvs, aes(x=log2FoldChange, y=logPVal)) +
   geom_vline(xintercept=c(1, -1), linetype="dashed", colour="black")+
   xlim(-24, 24)+
   ylim(-0.05, 200)+
-  ggtitle("Differential Gene Expression - 24h vs. 2h")+
+  ggtitle("24h vs. 2h")+
   theme_classic()
 
 
@@ -213,6 +213,7 @@ annot_results24h = arrange(annot_results24h, padj)
 
 #Selecting for significantly differentially expressed genes
 degs24h = filter(annot_results24h, abs(log2FoldChange) > 1 & padj < 0.05)
+write.csv(degs24h, "Data/24h_Naive.csv", row.names=FALSE)
 
 #2h vs. Naive (2h)
 
@@ -225,7 +226,9 @@ annotation = getBM(attributes=c('ensembl_gene_id', 'chromosome_name',
 
 annot_results2h = left_join(filtered_results2h, annotation)
 annot_results2h = arrange(annot_results2h, padj)
+
 degs2h = filter(annot_results2h, abs(log2FoldChange) > 1 & padj < 0.05)
+write.csv(degs2h, "Data/2h_Naive.csv", row.names=FALSE)
 
 #24h vs. 2h (vs)
 
@@ -238,4 +241,22 @@ annotation = getBM(attributes=c('ensembl_gene_id', 'chromosome_name',
 
 annot_resultsvs = left_join(filtered_resultsvs, annotation)
 annot_resultsvs = arrange(annot_resultsvs, padj)
+
 degsvs = filter(annot_resultsvs, abs(log2FoldChange) > 1 & padj < 0.05)
+write.csv(degsvs, "Data/24h_2h.csv", row.names=FALSE)
+
+
+#2.8: Investigating Outliers
+
+#Strongly upregulated(Gm14440/ENSMUSG00000078901) and downregulated at 24h(Gm2541/ENSMUSG00000089698) outliers selected from DESeq dataset to scrutinize consistency between samples (cols) and groups. drop=FALSE ensures resulting information is stored in a matrix
+Outliers24h = counts(dds)[c("ENSMUSG00000089698", "ENSMUSG00000078901", "ENSMUSG00000107383", "ENSMUSG00000030854"), 
+                          c("SRR7457551", "SRR7457552", "SRR7457561", "SRR7457562"),
+                          drop=FALSE]
+
+Outliers2h = counts(dds)[c("ENSMUSG00000089698", "ENSMUSG00000078901", "ENSMUSG00000107383", "ENSMUSG00000030854"), 
+                         c("SRR7457553", "SRR7457554", "SRR7457555", "SRR7457556"),
+                         drop=FALSE]
+
+OutliersNaive = counts(dds)[c("ENSMUSG00000089698", "ENSMUSG00000078901", "ENSMUSG00000107383", "ENSMUSG00000030854"), 
+                            c("SRR7457557", "SRR7457558", "SRR7457559", "SRR7457560"),
+                            drop=FALSE]
